@@ -9,7 +9,9 @@ export default function Home() {
       <Loader url='http://localhost:5000/manifest.json'  loading={<h3>loading ...</h3>} appdata= {{"count":count}} namespace='headerApp' selector='headercontainer'/>
       <button id="test" onClick={()=>setCount(count+1)}> Loader {count}</button>
       <Loader url='http://localhost:5001/manifest.json'  loading={<h3>loading ...</h3>} appdata= {{"count":count} }namespace='footerApp' selector='footercontainer'/>
-  
+      <Loader url='http://localhost:5002/manifest.json'  loading={<h3>loading ...</h3>} namespace='webComponent' selector='webcomponentcount'>
+      <search-result name-attribute={count}></search-result>
+      </Loader>      
     </div>
   );
 }
