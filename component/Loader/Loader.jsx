@@ -10,14 +10,17 @@ const Loader = ({
   deferloading,
   namespace,
   appdata,
+  identifier,
   children
 }) => {
+ 
   const { loaded,load} = useScriptLoader(
     url,
     selector,
     deferloading,
     namespace,
     appdata,
+    identifier
   );
 
   useEffect(() => {
@@ -26,24 +29,32 @@ const Loader = ({
 
   return (
     <>
-      <div>{loaded ? "" : loading}</div>
-      <div id={selector}>{children}</div>
+      <div id={identifier}>{loaded ? children : loading}</div>
     </>
   );
 };
 Loader.propTypes = {
   url: PropTypes.string.isRequired,
-  selector: PropTypes.string.isRequired,
+  selector: PropTypes.string,
   loading: PropTypes.node,
   deferloading: PropTypes.bool,
-  namespace: PropTypes.string.isRequired,
-  appdata: PropTypes.object
+  namespace: PropTypes.string,
+  appdata: PropTypes.object,
+  identifier:PropTypes.string.isRequired
   
 };
 Loader.defaultProps = {
   deferloading: true,
   loading: <p> Loading </p>,
-  appdata: {}
+  appdata: {},
+  selector:null,
+  namespace:null
 };
 
 export default Loader;
+
+
+
+
+
+

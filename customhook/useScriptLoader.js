@@ -1,7 +1,8 @@
 import { useState } from "react";
 
-const LoadScript = (url, id, deferloading) => {
+const LoadScript = (url, deferloading) => {
   let promise = new Promise(function (resolve, reject) {
+    const id = window.btoa(url)
     const existingScript = document.getElementById(id);
     if (existingScript) {
       return resolve("ok");
@@ -25,12 +26,22 @@ const microAppScript = async (manifestPath, namespace, deferloading) => {
 
   for (var key of Object.keys(data)) {
     if (key.match(/\.[0-9a-z]+$/i)[0] == ".js") {
-      promises.push(LoadScript(data[key], `${key}-${namespace}`, deferloading));
+      promises.push(LoadScript(data[key], deferloading));
     }
   }
   return Promise.allSettled(promises);
 };
 
+
+const loader = async(url,namespace,deferloading)=>{
+  if (url.match(/\.[0-9a-z]+$/i)[0] == ".js"){
+   const id = encodeURI(url)
+   await LoadScript(url,deferloading)
+  }
+  else{
+    await microAppScript(url,deferloading);
+  }
+}
 
 const useScriptLoader = (
   url,
@@ -38,12 +49,22 @@ const useScriptLoader = (
   deferloading,
   namespace,
   appdata,
+  id
 ) => {
   const [loaded, setLoaded] = useState(false);
   const load = async () => {
-    await microAppScript(url, namespace,deferloading);
-    if (window && window[namespace]) window[namespace].default.render(selector, appdata);
+    await loader(url,deferloading)
     setLoaded(true);
+    if (window && (namespace in window)){
+       if(selector !=null && document.getElementById(selector)){
+       window[namespace].default.render(selector, appdata);
+       }
+       else{
+         console.log(namespace)
+        window[namespace].default.render(id, appdata);
+       }
+    }
+    
     
   };
   return { loaded, load };
