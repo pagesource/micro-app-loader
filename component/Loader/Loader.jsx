@@ -28,9 +28,9 @@ const Loader = ({
   });
 
   return (
-    <>
+   
       <div id={identifier}>{loaded ? children : loading}</div>
-    </>
+    
   );
 };
 Loader.propTypes = {
