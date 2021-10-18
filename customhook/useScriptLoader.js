@@ -19,7 +19,7 @@ const LoadScript = (url, deferloading) => {
   return promise;
 };
 
-const microAppScript = async (manifestPath, namespace, deferloading) => {
+const microAppScript = async (manifestPath, deferloading) => {
   const response = await fetch(manifestPath, { mode: "cors" });
   const data = await response.json();
   const promises = [];
@@ -33,7 +33,7 @@ const microAppScript = async (manifestPath, namespace, deferloading) => {
 };
 
 
-const loader = async(url,namespace,deferloading)=>{
+const loader = async(url,deferloading)=>{
   if (url.match(/\.[0-9a-z]+$/i)[0] == ".js"){
    const id = encodeURI(url)
    await LoadScript(url,deferloading)

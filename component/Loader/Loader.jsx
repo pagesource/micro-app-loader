@@ -1,4 +1,4 @@
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 
 import PropTypes from "prop-types";
 import useScriptLoader from "../../customhook/useScriptLoader.js";
@@ -11,10 +11,9 @@ const Loader = ({
   namespace,
   appdata,
   identifier,
-  children
+  children,
 }) => {
- 
-  const { loaded,load} = useScriptLoader(
+  const { loaded, load } = useScriptLoader(
     url,
     selector,
     deferloading,
@@ -24,14 +23,10 @@ const Loader = ({
   );
 
   useEffect(() => {
-   load().then(() => console.log("Loaded"));
+    load().then(() => console.log("Loaded"));
   });
 
-  return (
-   
-      <div id={identifier}>{loaded ? children : loading}</div>
-    
-  );
+  return <div id={identifier}>{loaded ? children : loading}</div>;
 };
 Loader.propTypes = {
   url: PropTypes.string.isRequired,
@@ -40,21 +35,14 @@ Loader.propTypes = {
   deferloading: PropTypes.bool,
   namespace: PropTypes.string,
   appdata: PropTypes.object,
-  identifier:PropTypes.string.isRequired
-  
+  identifier: PropTypes.string.isRequired,
 };
 Loader.defaultProps = {
   deferloading: true,
   loading: <p> Loading </p>,
   appdata: {},
-  selector:null,
-  namespace:null
+  selector: null,
+  namespace: null,
 };
 
 export default Loader;
-
-
-
-
-
-
