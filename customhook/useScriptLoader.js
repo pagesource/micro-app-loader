@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const LoadScript = (url, deferloading) => {
   let promise = new Promise(function (resolve, reject) {
-    const id = window.btoa(url)
+    const id = window.btoa(url);
     const existingScript = document.getElementById(id);
     if (existingScript) {
       return resolve("ok");
@@ -13,35 +13,43 @@ const LoadScript = (url, deferloading) => {
     script.defer = deferloading;
     document.body.appendChild(script);
     script.onload = () => {
-      resolve("ok");
+      resolve('ok')
     };
+    script.onerror=()=>{
+      resolve('ok')
+    }
+
   });
   return promise;
 };
 
 const microAppScript = async (manifestPath, deferloading) => {
-  const response = await fetch(manifestPath, { mode: "cors" });
-  const data = await response.json();
-  const promises = [];
+  try {
+    const response = await fetch(manifestPath, { mode: "cors" });
+    if (!response.ok) return;
+    const data = await response.json();
+    const promises = [];
 
-  for (var key of Object.keys(data)) {
-    if (key.match(/\.[0-9a-z]+$/i)[0] == ".js") {
-      promises.push(LoadScript(data[key], deferloading));
+    for (var key of Object.keys(data)) {
+      if (key.match(/\.[0-9a-z]+$/i)[0] == ".js") {
+        promises.push(LoadScript(data[key], deferloading));
+      }
     }
+    return Promise.allSettled(promises);
+  } catch (err) {
+    console.log(err);
+    return;
   }
-  return Promise.allSettled(promises);
 };
 
-
-const loader = async(url,deferloading)=>{
-  if (url.match(/\.[0-9a-z]+$/i)[0] == ".js"){
-   const id = encodeURI(url)
-   await LoadScript(url,deferloading)
+const loader = async (url, deferloading) => {
+  if (url.match(/\.[0-9a-z]+$/i)[0] == ".js") {
+    const id = encodeURI(url);
+    await LoadScript(url, deferloading);
+  } else {
+    await microAppScript(url, deferloading);
   }
-  else{
-    await microAppScript(url,deferloading);
-  }
-}
+};
 
 const useScriptLoader = (
   url,
@@ -53,19 +61,16 @@ const useScriptLoader = (
 ) => {
   const [loaded, setLoaded] = useState(false);
   const load = async () => {
-    await loader(url,deferloading)
+    await loader(url, deferloading);
     setLoaded(true);
-    if (window && (namespace in window)){
-       if(selector !=null && document.getElementById(selector)){
-       window[namespace].default.render(selector, appdata);
-       }
-       else{
-         console.log(namespace)
+    if (window && namespace in window) {
+      if (selector != null && document.getElementById(selector)) {
+        window[namespace].default.render(selector, appdata);
+      } else {
+        console.log(namespace);
         window[namespace].default.render(id, appdata);
-       }
+      }
     }
-    
-    
   };
   return { loaded, load };
 };
