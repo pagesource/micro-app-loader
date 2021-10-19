@@ -9,7 +9,7 @@ To compose multiple independently delivered front-end applications into a whole,
 >####  <Loader url='http://localhost:5001/manifest.json' identifier = "footerloader" loading={\<h3>loading ...\</h3>} appdata= {{"count":count} }namespace='footerApp' />
 
 ### To load a web component
->#### <Loader url='http://localhost:5002/counter.js' loading={\<h3>loading ...\</h3>}>
+>#### <Loader url='http://localhost:5002/counter.js' identifier= "webcomponentloader" loading={\<h3>loading ...\</h3>}>
 >#### \<web-component name-attribute={count}>\</web-component> 
 >#### \</Loader> 
 
