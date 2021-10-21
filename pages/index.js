@@ -15,7 +15,7 @@ export default function Home() {
       </div>
       <Loader url='http://localhost:5000/manifest.json' identifier ="headerloader" loading={<h3>loading ...</h3>} appdata= {{"count":count}} namespace='headerApp' selector='testdiv'/>
       <button id="test" onClick={()=>setCount(count+1)}> Loader {count}</button>
-      <Loader url='http://localhost:5001/manifest.json' identifier = "footerloader" loading={<h3>loading ...</h3>} appdata= {{"count":count} }namespace='footerApp' />
+      <Loader url='http://localhost:5003/manifest.json' identifier = "footerloader" loading={<h3>loading ...</h3>} appdata= {{"count":count} }namespace='footerApp' />
       <Loader url='http://localhost:5002/counter.js' identifier="webcomponentloader" loading={<h3>loading ...</h3>} >
       <web-counter name-attribute={count}></web-counter>
       </Loader>      

@@ -26,7 +26,7 @@ const Loader = ({
     load().then(() => console.log("Loaded"));
   });
 
-  return <div id={identifier}>{loaded ? children : loading}</div>;
+  return <div id={identifier} data-testid="loader-testid">{loaded ? children : loading}</div>;
 };
 Loader.propTypes = {
   url: PropTypes.string.isRequired,
