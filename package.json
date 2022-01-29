@@ -1,5 +1,5 @@
 {
-  "name": "react-micro-app-loader",
+  "name": "@xt-pagesource/micro-app-loader",
   "version": "0.1.0",
   "private": true,
   "scripts": {
