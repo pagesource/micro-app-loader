@@ -1,10 +1,11 @@
 /**
  * @jest-environment jsdom
  */
+import React from "react";
 import { render} from "@testing-library/react";
 import '@testing-library/jest-dom'
 import { act } from 'react-dom/test-utils';
-import Loader from "./Loader.jsx";
+import Loader from "./Loader";
 describe("Loader.jsx", () => {
    
     test("Loader Component ", async () => {
