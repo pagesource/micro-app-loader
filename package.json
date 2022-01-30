@@ -2,12 +2,16 @@
   "name": "@xt-pagesource/micro-app-loader",
   "version": "0.1.0",
   "private": true,
+  "main": "build/index.js",
+  "module": "build/index.esm.js",
+  "files": [
+    "build"
+  ],
+  "types": "build/index.d.ts",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "test": "jest"
+    "build": "rollup -c",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "peerDependencies": {
     "react": ">=16.8.0",
