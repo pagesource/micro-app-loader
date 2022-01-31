@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const LoadScript = (url, deferloading) => {
+const LoadScript = (url:string, deferloading:boolean) :Promise<any>=> {
   let promise = new Promise(function (resolve, reject) {
     const id = window.btoa(url);
     const existingScript = document.getElementById(id);
@@ -23,8 +23,9 @@ const LoadScript = (url, deferloading) => {
   return promise;
 };
 
-const microAppScript = async (manifestPath, deferloading) => {
+const microAppScript = async (manifestPath:string, deferloading:boolean) => {
   try {
+    const urlObject = new URL(manifestPath)
     const response = await fetch(manifestPath, { mode: "cors" });
     if (!response.ok) return;
     const data = await response.json();
@@ -32,7 +33,7 @@ const microAppScript = async (manifestPath, deferloading) => {
 
     for (var key of Object.keys(data)) {
       if (key.match(/\.[0-9a-z]+$/i)[0] == ".js") {
-        promises.push(LoadScript(data[key], deferloading));
+        promises.push(LoadScript(urlObject.origin+data[key], deferloading));
       }
     }
     return Promise.allSettled(promises);
@@ -42,7 +43,7 @@ const microAppScript = async (manifestPath, deferloading) => {
   }
 };
 
-const loader = async (url, deferloading) => {
+const loader = async (url:string, deferloading:boolean) => {
   if (url.match(/\.[0-9a-z]+$/i)[0] == ".js") {
     const id = encodeURI(url);
     await LoadScript(url, deferloading);
@@ -52,12 +53,12 @@ const loader = async (url, deferloading) => {
 };
 
 const useScriptLoader = (
-  url,
-  selector,
-  deferloading,
-  namespace,
-  appdata,
-  id
+  url:string,
+  selector:string,
+  deferloading:boolean,
+  namespace:string,
+  appdata:object,
+  id:string
 ) => {
   const [loaded, setLoaded] = useState(false);
   const load = async () => {
